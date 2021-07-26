@@ -1,10 +1,10 @@
 <template>
-  <div class="about">
-    <h1 class="about__logo">SYI</h1>
-    <auth-form :link-name="name" @button-action="about">
-      <template #cardTitle>about</template>
-      <template #buttonName>about</template>
-      <template #link>about</template>
+  <div class="signup">
+    <h1 class="signup__logo">SYI</h1>
+    <auth-form :link-name="linkName" @button-action="signup">
+      <template #cardTitle>新規登録</template>
+      <template #buttonName>新規登録</template>
+      <template #link>ログインする</template>
     </auth-form>
   </div>
 </template>
@@ -16,12 +16,12 @@ import AuthForm from "../components/AuthForm.vue";
 export default defineComponent({
   data() {
     return {
-      name: "Home",
+      linkName: "Home",
     };
   },
   methods: {
-    about(email: string, password: string) {
-      console.log("about");
+    signup(email: string, password: string) {
+      console.log("signup");
     },
   },
   components: {
@@ -46,7 +46,7 @@ $sp: 481px;
   }
 }
 
-.about {
+.signup {
   text-align: center;
   background-color: lighten(#125d98, 20%);
   height: 100%;

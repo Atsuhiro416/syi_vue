@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <h1 class="home__logo">SYI</h1>
-    <auth-form :link-name="name" @button-action="login">
+    <auth-form :link-name="linkName" @button-action="login">
       <template #cardTitle>ログイン</template>
       <template #buttonName>ログイン</template>
       <template #link>アカウントを作る</template>
@@ -16,7 +16,7 @@ import AuthForm from "../components/AuthForm.vue";
 export default defineComponent({
   data() {
     return {
-      name: "About",
+      linkName: "Signup",
       email: "",
       password: "",
     };
