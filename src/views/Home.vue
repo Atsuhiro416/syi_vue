@@ -14,6 +14,9 @@ import { defineComponent } from "vue";
 import AuthForm from "../components/AuthForm.vue";
 
 export default defineComponent({
+  props: {
+    userRegisteredMessage: String,
+  },
   data() {
     return {
       linkName: "Signup",

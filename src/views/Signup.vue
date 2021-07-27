@@ -12,16 +12,41 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import AuthForm from "../components/AuthForm.vue";
+import authRepository from "../repositories/authRepository";
 
 export default defineComponent({
   data() {
     return {
       linkName: "Home",
+      emailErrorMessage: "",
+      passwordErrorMessage: "",
     };
   },
   methods: {
     signup(email: string, password: string) {
-      console.log("signup");
+      authRepository
+        .register({
+          email: email,
+          password: password,
+        })
+        .then((res) => {
+          this.$router.push({
+            name: "Home",
+            params: { userRegisteredMessage: res.data.message },
+          });
+        })
+        .catch((e) => {
+          this.emailErrorMessage = "";
+          this.passwordErrorMessage = "";
+          const emailMessage: string = e.response.data.errors.email;
+          if (emailMessage) {
+            this.emailErrorMessage = emailMessage[0];
+          }
+          const passwordMessage: string = e.response.data.errors.password;
+          if (passwordMessage) {
+            this.passwordErrorMessage = passwordMessage[0];
+          }
+        });
     },
   },
   components: {
