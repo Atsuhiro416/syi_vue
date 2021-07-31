@@ -1,7 +1,12 @@
 <template>
   <div class="signup">
     <h1 class="signup__logo">SYI</h1>
-    <auth-form :link-name="linkName" @button-action="signup">
+    <auth-form
+      @button-action="signup"
+      :link-name="linkName"
+      :email-error-message="emailErrorMessage"
+      :password-error-message="passwordErrorMessage"
+    >
       <template #cardTitle>新規登録</template>
       <template #buttonName>新規登録</template>
       <template #link>ログインする</template>
