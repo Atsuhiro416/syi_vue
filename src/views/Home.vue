@@ -1,7 +1,12 @@
 <template>
   <div class="home">
     <h1 class="home__logo">SYI</h1>
-    <auth-form :link-name="linkName" @button-action="login">
+    <auth-form
+      @button-action="login"
+      :link-name="linkName"
+      :email-error-message="emailErrorMessage"
+      :password-error-message="passwordErrorMessage"
+    >
       <template #cardTitle>ログイン</template>
       <template #buttonName>ログイン</template>
       <template #link>アカウントを作る</template>
@@ -12,6 +17,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import AuthForm from "../components/AuthForm.vue";
+import authRepository from "../repositories/authRepository";
 
 export default defineComponent({
   props: {
@@ -20,14 +26,33 @@ export default defineComponent({
   data() {
     return {
       linkName: "Signup",
-      email: "",
-      password: "",
+      emailErrorMessage: "",
+      passwordErrorMessage: "",
     };
   },
   methods: {
     login(email: string, password: string) {
-      this.email = email;
-      this.password = password;
+      authRepository
+        .login({
+          email: email,
+          password: password,
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((e) => {
+          console.log(e.response.data.message);
+          this.emailErrorMessage = "";
+          this.passwordErrorMessage = "";
+          const status: number = e.response.status;
+          const errorMessage: string = e.response.data.message;
+          if (status === 404) {
+            this.emailErrorMessage = errorMessage;
+          }
+          if (status === 401) {
+            this.passwordErrorMessage = errorMessage;
+          }
+        });
     },
   },
   components: {
