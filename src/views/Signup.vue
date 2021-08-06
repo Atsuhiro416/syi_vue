@@ -1,15 +1,15 @@
 <template>
-  <div class="home">
-    <h1 class="home__logo">SYI</h1>
+  <div class="signup">
+    <h1 class="signup__logo">SYI</h1>
     <auth-form
-      @button-action="login"
+      @button-action="signup"
       :link-name="linkName"
       :email-error-message="emailErrorMessage"
       :password-error-message="passwordErrorMessage"
     >
-      <template #cardTitle>ログイン</template>
-      <template #buttonName>ログイン</template>
-      <template #link>アカウントを作る</template>
+      <template #cardTitle>新規登録</template>
+      <template #buttonName>新規登録</template>
+      <template #link>ログインする</template>
     </auth-form>
   </div>
 </template>
@@ -18,43 +18,38 @@
 import { defineComponent } from "vue";
 import AuthForm from "../components/AuthForm.vue";
 import authRepository from "../repositories/authRepository";
-import store from "@/store";
 
 export default defineComponent({
-  props: {
-    userRegisteredMessage: String,
-  },
   data() {
     return {
-      linkName: "Signup",
+      linkName: "Home",
       emailErrorMessage: "",
       passwordErrorMessage: "",
     };
   },
   methods: {
-    authCountup() {
-      store.commit("auth/increment");
-    },
-    login(email: string, password: string) {
+    signup(email: string, password: string) {
       authRepository
-        .login({
+        .register({
           email: email,
           password: password,
         })
         .then((res) => {
-          store.commit("login", res);
-          this.$router.push("/top");
+          this.$router.push({
+            name: "Home",
+            params: { userRegisteredMessage: res.data.message },
+          });
         })
         .catch((e) => {
           this.emailErrorMessage = "";
           this.passwordErrorMessage = "";
-          const status: number = e.response.status;
-          const errorMessage: string = e.response.data.message;
-          if (status === 404) {
-            this.emailErrorMessage = errorMessage;
+          const emailMessage: string = e.response.data.errors.email;
+          if (emailMessage) {
+            this.emailErrorMessage = emailMessage[0];
           }
-          if (status === 401) {
-            this.passwordErrorMessage = errorMessage;
+          const passwordMessage: string = e.response.data.errors.password;
+          if (passwordMessage) {
+            this.passwordErrorMessage = passwordMessage[0];
           }
         });
     },
@@ -81,7 +76,7 @@ $sp: 481px;
   }
 }
 
-.home {
+.signup {
   text-align: center;
   background-color: lighten(#125d98, 20%);
   height: 100%;
