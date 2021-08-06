@@ -18,6 +18,7 @@
 import { defineComponent } from "vue";
 import AuthForm from "../components/AuthForm.vue";
 import authRepository from "../repositories/authRepository";
+import store from "@/store";
 
 export default defineComponent({
   props: {
@@ -31,6 +32,9 @@ export default defineComponent({
     };
   },
   methods: {
+    authCountup() {
+      store.commit("auth/increment");
+    },
     login(email: string, password: string) {
       authRepository
         .login({
@@ -38,10 +42,10 @@ export default defineComponent({
           password: password,
         })
         .then((res) => {
-          console.log(res);
+          store.commit("login", res);
+          this.$router.push("/top");
         })
         .catch((e) => {
-          console.log(e.response.data.message);
           this.emailErrorMessage = "";
           this.passwordErrorMessage = "";
           const status: number = e.response.status;
