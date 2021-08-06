@@ -32,9 +32,6 @@ export default defineComponent({
     };
   },
   methods: {
-    authCountup() {
-      store.commit("auth/increment");
-    },
     login(email: string, password: string) {
       authRepository
         .login({

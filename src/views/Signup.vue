@@ -22,7 +22,7 @@ import authRepository from "../repositories/authRepository";
 export default defineComponent({
   data() {
     return {
-      linkName: "Home",
+      linkName: "Login",
       emailErrorMessage: "",
       passwordErrorMessage: "",
     };
@@ -36,7 +36,7 @@ export default defineComponent({
         })
         .then((res) => {
           this.$router.push({
-            name: "Home",
+            name: "Login",
             params: { userRegisteredMessage: res.data.message },
           });
         })
