@@ -40,7 +40,7 @@ export default defineComponent({
         })
         .then((res) => {
           store.commit("login", res);
-          this.$router.push("/top");
+          this.$router.push("/home");
         })
         .catch((e) => {
           this.emailErrorMessage = "";
