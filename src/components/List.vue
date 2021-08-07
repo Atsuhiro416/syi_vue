@@ -24,6 +24,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Link from "../components/icons/Link.vue";
+import listRepository from "../repositories/listRepository";
 
 export default defineComponent({
   data() {
@@ -37,7 +38,21 @@ export default defineComponent({
       },
     };
   },
-
+  methods: {
+    getLists() {
+      listRepository
+        .getUserLists()
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+  },
+  created() {
+    this.getLists();
+  },
   components: {
     Link,
   },
