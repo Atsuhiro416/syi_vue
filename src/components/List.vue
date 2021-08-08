@@ -24,34 +24,10 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Link from "../components/icons/Link.vue";
-import listRepository from "../repositories/listRepository";
 
 export default defineComponent({
-  data() {
-    return {
-      list: {
-        name: "おおおゆおよう\nおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおお",
-        link: "https://google.com",
-        comment: "これはコメント",
-        created_at: "2002.20.20",
-        updated_at: "2002.20.20",
-      },
-    };
-  },
-  methods: {
-    getLists() {
-      listRepository
-        .getUserLists()
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    },
-  },
-  created() {
-    this.getLists();
+  props: {
+    list: Object,
   },
   components: {
     Link,
@@ -128,7 +104,7 @@ $sp: 481px;
     margin-right: 5vw;
     color: lighten(#000000, 50%);
 
-    @include sp {
+    @include tab {
       font-size: 0.7rem;
     }
 
