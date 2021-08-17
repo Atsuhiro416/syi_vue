@@ -36,6 +36,7 @@ export default defineComponent({
   data() {
     return {
       lists: [],
+      sortListsId: 1,
       displayListsId: 1,
     };
   },
@@ -54,23 +55,24 @@ export default defineComponent({
 
     sortLists(id: number) {
       const lists = this.lists;
+      this.sortListsId = id;
 
-      if (id === 1) {
+      if (this.sortListsId === 1) {
         lists.sort((a: any, b: any) => {
           return a.created_at < b.created_at ? -1 : 1;
         });
       }
-      if (id === 2) {
+      if (this.sortListsId === 2) {
         lists.sort((a: any, b: any) => {
           return a.created_at < b.created_at ? 1 : -1;
         });
       }
-      if (id === 3) {
+      if (this.sortListsId === 3) {
         lists.sort((a: any, b: any) => {
           return a.updated_at < b.updated_at ? -1 : 1;
         });
       }
-      if (id === 4) {
+      if (this.sortListsId === 4) {
         lists.sort((a: any, b: any) => {
           return a.updated_at < b.updated_at ? 1 : -1;
         });
@@ -88,6 +90,9 @@ export default defineComponent({
   },
   created() {
     this.getLists();
+  },
+  updated() {
+    this.sortLists(this.sortListsId);
   },
   components: {
     LoggedHeader,
