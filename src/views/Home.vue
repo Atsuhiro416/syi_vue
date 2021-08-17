@@ -80,12 +80,7 @@ export default defineComponent({
     },
 
     changeDisplayLists(id: number) {
-      if (id === 1) {
-        this.displayListsId = 1;
-      }
-      if (id === 2) {
-        this.displayListsId = 2;
-      }
+      this.displayListsId = id;
     },
   },
   created() {
