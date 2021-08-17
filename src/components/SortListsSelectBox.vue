@@ -47,9 +47,11 @@ $sp: 481px;
   border-radius: 5px;
   padding: 1px 5px;
   font-size: 14px;
+  margin-right: 3vw;
 
   @include sp {
     font-size: 12px;
+    margin-right: 5vw;
   }
 }
 </style>
