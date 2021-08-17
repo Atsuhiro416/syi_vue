@@ -9,7 +9,14 @@
     </div>
 
     <div class="lists">
-      <List v-for="list in lists" :key="list.id" :list="list" />
+      <!-- <List v-for="list in lists" :key="list.id" :list="list" /> -->
+
+      <EditableList
+        v-for="list in lists"
+        :key="list.id"
+        :list="list"
+        @get-lists="getLists"
+      />
     </div>
   </div>
 </template>
@@ -17,7 +24,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import LoggedHeader from "../components/Header.vue";
-import List from "../components/List.vue";
+// import List from "../components/List.vue";
+import EditableList from "../components/EditableList.vue";
 import SortListsSelectBox from "../components/SortListsSelectBox.vue";
 import listRepository from "../repositories/listRepository";
 
@@ -70,7 +78,8 @@ export default defineComponent({
   },
   components: {
     LoggedHeader,
-    List,
+    // List,
+    EditableList,
     SortListsSelectBox,
   },
 });
