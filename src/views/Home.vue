@@ -4,6 +4,8 @@
       <template #header-name>リスト</template>
     </logged-header>
 
+    <AddListAccordion />
+
     <div class="select-boxes">
       <SortListsSelectBox @sort-lists="sortLists" />
       <ChangeDisplayLists @change-display-lists="changeDisplayLists" />
@@ -26,6 +28,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import LoggedHeader from "../components/Header.vue";
+import AddListAccordion from "../components/AddListAccordion.vue";
 import List from "../components/List.vue";
 import EditableList from "../components/EditableList.vue";
 import SortListsSelectBox from "../components/SortListsSelectBox.vue";
@@ -91,6 +94,7 @@ export default defineComponent({
   },
   components: {
     LoggedHeader,
+    AddListAccordion,
     List,
     EditableList,
     SortListsSelectBox,
