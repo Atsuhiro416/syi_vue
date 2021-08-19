@@ -23,9 +23,11 @@
       </div>
     </transition>
 
-    <div @click="accordionToggle">
-      <Up v-if="isOpen" />
-      <Down v-else />
+    <div class="add-list-accordion__toggle" @click="accordionToggle">
+      <transition name="toggle">
+        <Up v-if="isOpen" />
+        <Down v-else />
+      </transition>
     </div>
     <hr class="add-list-accordion--endline" />
   </div>
@@ -136,17 +138,40 @@ $sp: 481px;
   }
 }
 
+@keyframes open {
+  0% {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+.accordion-enter-active {
+  animation: open 0.6s ease;
+}
+.accordion-leave-active {
+  animation: open 0.3s ease reverse;
+}
+
+@keyframes rotate {
+  0% {
+    opacity: 0;
+    transform: rotateX(180deg);
+  }
+}
+
+.toggle-enter-active {
+  animation: rotate 1s ease;
+}
+
 .add-list-accordion {
-  margin-top: 5vh;
   padding: 0 2vw;
   // position: fixed;
 
-  @include sp {
-    margin-top: 2vh;
-  }
-
   &__inner {
-    margin-bottom: 2vh;
+    margin-top: 3vh;
     padding: 0 6vw;
     display: flex;
 
@@ -207,6 +232,10 @@ $sp: 481px;
     &--create {
       @include button(#125d98);
     }
+  }
+
+  &__toggle {
+    display: flex;
   }
 
   &--endline {
