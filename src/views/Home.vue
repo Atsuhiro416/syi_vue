@@ -4,7 +4,7 @@
       <template #header-name>リスト</template>
     </logged-header>
 
-    <AddListAccordion />
+    <AddListAccordion @get-lists="getLists" />
 
     <div class="select-boxes">
       <SortListsSelectBox @sort-lists="sortLists" />

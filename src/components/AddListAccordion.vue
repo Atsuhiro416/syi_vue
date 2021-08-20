@@ -16,8 +16,19 @@
           {{ name.length }}/250
         </span>
 
+        <transition name="fade">
+          <p v-if="isMessage" class="add-list-accordion__error-message">
+            {{ message }}
+          </p>
+        </transition>
+
         <div class="add-list-accordion__buttons">
-          <button class="add-list-accordion__buttons--add">追加</button>
+          <button
+            class="add-list-accordion__buttons--add"
+            @click="simpleAddList"
+          >
+            追加
+          </button>
           <button class="add-list-accordion__buttons--create">作成</button>
         </div>
       </div>
@@ -35,6 +46,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import listRepository from "../repositories/listRepository";
+import store from "@/store";
 import Up from "../components/icons/Up.vue";
 import Down from "../components/icons/Down.vue";
 
@@ -42,9 +55,11 @@ export default defineComponent({
   data() {
     return {
       name: "",
+      message: "",
       isValidatedText: true,
       height: "",
       isOpen: true,
+      isMessage: false,
     };
   },
   watch: {
@@ -53,6 +68,47 @@ export default defineComponent({
     },
   },
   methods: {
+    simpleAddList() {
+      const userId = store.getters.getUserInfo.id;
+
+      if (!this.name.length) {
+        this.showMessage();
+        this.isValidatedText = false;
+        this.message = "入力は必須です";
+        return;
+      }
+      if (this.name.length > 250) {
+        this.showMessage();
+        this.message = "入力できる文字数は250字以内です";
+        return;
+      }
+
+      listRepository
+        .createList({
+          name: this.name,
+          link: null,
+          comment: null,
+          user_id: userId,
+        })
+        .then((res) => {
+          this.message = res.data.message;
+          this.showMessage();
+          this.name = "";
+          this.$emit("get-lists");
+        })
+        .catch((e) => {
+          this.message = e.response.data.error.name[0];
+          this.showMessage();
+        });
+    },
+
+    showMessage() {
+      this.isMessage = true;
+      setTimeout(() => {
+        this.isMessage = false;
+      }, 2000);
+    },
+
     validateText() {
       this.isValidatedText = true;
 
@@ -166,9 +222,22 @@ $sp: 481px;
   animation: rotate 1s ease;
 }
 
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s;
+}
+.fade-enter-to,
+.fade-leave-form {
+  opacity: 0.7;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 .add-list-accordion {
   padding: 0 2vw;
-  // position: fixed;
+  position: relative;
 
   &__inner {
     margin-top: 3vh;
@@ -201,6 +270,28 @@ $sp: 481px;
     &--length {
       width: 5vw;
       font-size: 10px;
+    }
+  }
+
+  &__error-message {
+    position: absolute;
+    width: 25vw;
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    background: #ffffff;
+    z-index: 100;
+    top: 30%;
+    left: 25%;
+    transform: translate(-25%, -50%);
+
+    @include pc {
+      width: 50vw;
+      height: 8vh;
     }
   }
 
