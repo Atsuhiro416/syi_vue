@@ -133,14 +133,14 @@ $sp: 481px;
 }
 
 .home {
-  width: 100vw;
+  width: 100%;
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: 15vw 85vw;
+  grid-template-columns: 15% 85%;
   grid-template-areas: "nav main";
 
   @include pc {
-    grid-template-columns: 20vw 80vw;
+    grid-template-columns: 20% 80%;
   }
   @include tab {
     grid-template-areas: "main main";
