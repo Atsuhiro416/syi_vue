@@ -202,6 +202,9 @@ $sp: 481px;
     @include tab {
       display: block;
       position: fixed;
+      overflow: hidden;
+      width: 30px;
+      height: 30px;
       z-index: 100;
       top: 5vh;
       right: 5vw;
