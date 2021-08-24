@@ -4,18 +4,21 @@
       <h2 class="app-name">SYI</h2>
       <ul class="side-nav__lists">
         <li class="side-nav__list">
-          <router-link class="side-nav__list-link" :to="{ name: Home }"
+          <router-link class="side-nav__list-link" :to="{ name: 'Account' }"
             >アカウント</router-link
           >
         </li>
         <li class="side-nav__list">
-          <router-link class="side-nav__list-link" :to="{ name: Home }"
+          <router-link
+            class="side-nav__list-link"
+            :to="{ name: 'Home' }"
+            @click="closeMenuForUnderTabScreen"
             >リスト</router-link
           >
           <Plus />
         </li>
         <li class="side-nav__list">
-          <router-link class="side-nav__list-link" :to="{ name: Home }"
+          <router-link class="side-nav__list-link" :to="{ name: 'Folders' }"
             >フォルダ</router-link
           >
           <Plus />
