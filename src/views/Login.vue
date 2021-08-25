@@ -17,6 +17,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import AuthForm from "../components/AuthForm.vue";
+import Repository from "../repositories/Repository";
 import authRepository from "../repositories/authRepository";
 import store from "@/store";
 
@@ -40,6 +41,9 @@ export default defineComponent({
         })
         .then((res) => {
           store.commit("login", res);
+          Repository.url.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${res.data.data.api_token}`;
           this.$router.push("/home");
         })
         .catch((e) => {
