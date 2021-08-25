@@ -24,7 +24,7 @@
           <Plus />
         </li>
         <li class="side-nav__list">
-          <p class="side-nav__logout">ログアウト</p>
+          <p class="side-nav__logout" @click="logout">ログアウト</p>
         </li>
       </ul>
     </nav>
@@ -40,6 +40,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import store from "@/store";
 import Plus from "../components/icons/Plus.vue";
 import Menu from "../components/icons/Menu.vue";
 import Close from "../components/icons/Close.vue";
@@ -51,6 +52,10 @@ export default defineComponent({
     };
   },
   methods: {
+    logout() {
+      store.dispatch("logout");
+    },
+
     displayMenu() {
       window.addEventListener("resize", () => {
         if (window.innerWidth > 769) {
