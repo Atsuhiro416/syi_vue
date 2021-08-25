@@ -56,9 +56,8 @@ export default defineComponent({
         if (window.innerWidth > 769) {
           this.isMenu = true;
         }
-        if (window.innerWidth <= 768) {
-          this.isMenu = false;
-        }
+
+        this.closeMenuForUnderTabScreen();
       });
     },
 
