@@ -18,10 +18,17 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 $pc: 1024px;
+$tab: 769px;
 $sp: 481px;
 
 @mixin pc {
   @media (max-width: ($pc)) {
+    @content;
+  }
+}
+
+@mixin tab {
+  @media (max-width: ($tab)) {
     @content;
   }
 }
@@ -36,7 +43,13 @@ $sp: 481px;
   background-color: lighten(#125d98, 20%);
   height: 15vh;
   width: 100wh;
+  padding: 0 5vw;
+  display: flex;
+  align-items: center;
 
+  @include tab {
+    justify-content: space-around;
+  }
   @include sp {
     height: 10vh;
   }
@@ -44,15 +57,12 @@ $sp: 481px;
   &__name {
     color: #ffffff;
     font-size: 2.5rem;
-    line-height: 15vh;
 
     @include pc {
       font-size: 3rem;
     }
-
     @include sp {
       font-size: 1.5rem;
-      line-height: 11vh;
     }
   }
 }
