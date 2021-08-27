@@ -15,11 +15,11 @@
       </div>
 
       <div class="lists" v-if="displayListsId === 1">
-        <List v-for="list in lists" :key="list.id" :list="list" />
+        <List v-for="list in sortedLists" :key="list.id" :list="list" />
       </div>
       <div class="lists" v-if="displayListsId === 2">
         <EditableList
-          v-for="list in lists"
+          v-for="list in sortedLists"
           :key="list.id"
           :list="list"
           @get-lists="getLists"
@@ -39,6 +39,15 @@ import EditableList from "../components/EditableList.vue";
 import SortListsSelectBox from "../components/SortListsSelectBox.vue";
 import ChangeDisplayLists from "../components/ChangeDisplayListsSelectBox.vue";
 import listRepository from "../repositories/listRepository";
+
+interface ListInterface {
+  id: number;
+  name: string;
+  link: string;
+  comment: string;
+  created_at: string;
+  updated_at: string;
+}
 
 export default defineComponent({
   data() {
@@ -62,33 +71,34 @@ export default defineComponent({
     },
 
     sortLists(id: number) {
-      const lists = this.lists;
       this.sortListsId = id;
-
-      if (this.sortListsId === 1) {
-        lists.sort((a: any, b: any) => {
-          return a.created_at < b.created_at ? -1 : 1;
-        });
-      }
-      if (this.sortListsId === 2) {
-        lists.sort((a: any, b: any) => {
-          return a.created_at < b.created_at ? 1 : -1;
-        });
-      }
-      if (this.sortListsId === 3) {
-        lists.sort((a: any, b: any) => {
-          return a.updated_at < b.updated_at ? -1 : 1;
-        });
-      }
-      if (this.sortListsId === 4) {
-        lists.sort((a: any, b: any) => {
-          return a.updated_at < b.updated_at ? 1 : -1;
-        });
-      }
     },
 
     changeDisplayLists(id: number) {
       this.displayListsId = id;
+    },
+  },
+  computed: {
+    sortedLists() {
+      const sortedLists: ListInterface[] = this.lists;
+      const sortId = this.sortListsId;
+
+      sortedLists.sort((a: ListInterface, b: ListInterface): any => {
+        if (sortId === 1) {
+          return a.created_at < b.created_at ? -1 : 1;
+        }
+        if (sortId === 2) {
+          return a.created_at < b.created_at ? 1 : -1;
+        }
+        if (sortId === 3) {
+          return a.updated_at < b.updated_at ? -1 : 1;
+        }
+        if (sortId === 4) {
+          return a.updated_at < b.updated_at ? 1 : -1;
+        }
+      });
+
+      return sortedLists;
     },
   },
   created() {
