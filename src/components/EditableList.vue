@@ -311,9 +311,12 @@ $sp: 481px;
 
   &__dates {
     font-size: 1rem;
-    line-height: 45px;
+    // line-height: 45px;
     margin-right: 5vw;
     color: lighten(#000000, 50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 
     @include pc {
       font-size: 0.7rem;
@@ -323,7 +326,7 @@ $sp: 481px;
     }
 
     &--created {
-      margin-right: 2vw;
+      // margin-bottom: 1vh;
 
       @include tab {
         @include tab-dates();
