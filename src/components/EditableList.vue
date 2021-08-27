@@ -24,7 +24,7 @@
             >更新日：{{ list.updated_at }}</span
           >
         </div>
-        <a class="list__link" :href="list.link">
+        <a class="list__link" v-if="list.link" :href="list.link">
           <Link />
         </a>
         <div class="list__buttons">
@@ -306,13 +306,17 @@ $sp: 481px;
 
   &__info {
     display: flex;
+    justify-content: space-between;
+    width: 65vw;
     height: 45px;
+
+    @include tab {
+      width: 75vw;
+    }
   }
 
   &__dates {
     font-size: 1rem;
-    // line-height: 45px;
-    margin-right: 5vw;
     color: lighten(#000000, 50%);
     display: flex;
     flex-direction: column;
@@ -326,8 +330,6 @@ $sp: 481px;
     }
 
     &--created {
-      // margin-bottom: 1vh;
-
       @include tab {
         @include tab-dates();
       }

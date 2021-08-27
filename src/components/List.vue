@@ -11,7 +11,7 @@
             >更新日：{{ list.updated_at }}</span
           >
         </div>
-        <a class="list__link" :href="list.link">
+        <a class="list__link" v-if="list.link" :href="list.link">
           <Link />
         </a>
       </div>
