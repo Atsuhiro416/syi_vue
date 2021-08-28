@@ -290,6 +290,9 @@ $sp: 481px;
     @include pc {
       font-size: 1.7rem;
     }
+    @include tab {
+      width: 70vw;
+    }
     @include sp {
       font-size: 1rem;
     }

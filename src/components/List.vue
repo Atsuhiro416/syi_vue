@@ -104,6 +104,11 @@ $sp: 481px;
     margin-right: 5vw;
     color: lighten(#000000, 50%);
 
+    @include pc {
+      display: flex;
+      flex-direction: column;
+      line-height: 20px;
+    }
     @include tab {
       font-size: 0.7rem;
     }

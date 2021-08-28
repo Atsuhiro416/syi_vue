@@ -299,6 +299,12 @@ $sp: 481px;
     margin-left: 5vw;
     width: 25vw;
 
+    @include pc {
+      width: 40vw;
+    }
+    @include tab {
+      width: 25vw;
+    }
     @include sp {
       width: 50vw;
       height: 10vh;
