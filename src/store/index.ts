@@ -1,5 +1,7 @@
-import { createStore } from "vuex";
+import { createStore, storeKey } from "vuex";
 import createPersistedState from "vuex-persistedstate";
+import authRepository from "../repositories/authRepository";
+import router from "../router/index";
 
 interface State {
   user: any;
@@ -50,7 +52,22 @@ export default createStore({
       }
     },
   },
-  actions: {},
+  actions: {
+    async logout({ commit }) {
+      await authRepository
+        .logout({
+          id: this.getters.getUserInfo.id,
+        })
+        .catch((e) => {
+          alert("問題が発生しました");
+        });
+
+      commit("user", {});
+      commit("auth", false);
+      commit("apiToken", null);
+      router.replace("/");
+    },
+  },
   modules: {},
   plugins: [createPersistedState()],
 });

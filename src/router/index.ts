@@ -1,13 +1,16 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import Home from "../views/Home.vue";
+import Login from "../views/Login.vue";
 import Signup from "../views/Signup.vue";
-import Top from "../views/Top.vue";
+import Home from "../views/Home.vue";
+import Account from "../views/UserAccount.vue";
+import Folders from "../views/Folders.vue";
+import CreateList from "../views/CreateList.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    name: "Home",
-    component: Home,
+    name: "Login",
+    component: Login,
     props: true,
   },
   {
@@ -16,9 +19,24 @@ const routes: Array<RouteRecordRaw> = [
     component: Signup,
   },
   {
-    path: "/top",
-    name: "Top",
-    component: Top,
+    path: "/home",
+    name: "Home",
+    component: Home,
+  },
+  {
+    path: "/account",
+    name: "Account",
+    component: Account,
+  },
+  {
+    path: "/folders",
+    name: "Folders",
+    component: Folders,
+  },
+  {
+    path: "/create-list",
+    name: "CreateList",
+    component: CreateList,
   },
 ];
 

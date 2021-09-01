@@ -8,4 +8,8 @@ export default {
   login(payload: any) {
     return Repository.url.post("/login", payload);
   },
+
+  logout(payload: any) {
+    return Repository.url.post("/logout", payload);
+  },
 };
