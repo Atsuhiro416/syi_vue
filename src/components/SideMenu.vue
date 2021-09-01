@@ -21,7 +21,7 @@
           <router-link class="side-nav__list-link" :to="{ name: 'Folders' }"
             >フォルダ</router-link
           >
-          <Plus />
+          <Plus @click="toggleCreateModal" />
         </li>
         <li class="side-nav__list">
           <p class="side-nav__logout" @click="logout">ログアウト</p>
@@ -36,11 +36,14 @@
       <Menu v-else />
     </transition>
   </div>
+
+  <CreateFolderModal v-if="isModal" @toggle-create-modal="toggleCreateModal" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import store from "@/store";
+import CreateFolderModal from "./CreateFolderModal.vue";
 import Plus from "../components/icons/Plus.vue";
 import Menu from "../components/icons/Menu.vue";
 import Close from "../components/icons/Close.vue";
@@ -49,6 +52,7 @@ export default defineComponent({
   data() {
     return {
       isMenu: true,
+      isModal: false,
     };
   },
   methods: {
@@ -75,6 +79,10 @@ export default defineComponent({
     toggleMenu() {
       this.isMenu = !this.isMenu;
     },
+
+    toggleCreateModal() {
+      this.isModal = !this.isModal;
+    },
   },
   created() {
     this.closeMenuForUnderTabScreen();
@@ -86,6 +94,7 @@ export default defineComponent({
     this.displayMenu();
   },
   components: {
+    CreateFolderModal,
     Plus,
     Menu,
     Close,
