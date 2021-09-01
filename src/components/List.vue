@@ -80,6 +80,7 @@ $sp: 481px;
     font-size: 1.2rem;
     margin-bottom: 2vh;
     white-space: pre-line;
+    word-break: break-word;
 
     @include pc {
       font-size: 1.7rem;

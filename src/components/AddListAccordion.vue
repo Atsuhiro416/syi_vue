@@ -236,8 +236,6 @@ $sp: 481px;
   &__text-field {
     font-size: 1.2rem;
     width: 50vw;
-    white-space: pre-line;
-    outline: none;
 
     @include pc {
       font-size: 1.7rem;

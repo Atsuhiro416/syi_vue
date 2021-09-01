@@ -1,5 +1,6 @@
 <template>
   <textarea
+    class="text-area"
     ref="area"
     :style="styles"
     v-model="text"
@@ -59,3 +60,10 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss" scoped>
+.text-area {
+  white-space: pre-line;
+  outline: none;
+}
+</style>

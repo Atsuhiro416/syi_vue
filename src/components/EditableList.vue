@@ -268,8 +268,6 @@ $sp: 481px;
     font-size: 1.2rem;
     margin-bottom: 2vh;
     width: 50vw;
-    white-space: pre-line;
-    outline: none;
 
     @include pc {
       font-size: 1.7rem;
