@@ -1,17 +1,16 @@
 <template>
   <div class="add-list-accordion">
     <transition name="accordion">
-      <div class="add-list-accordion__inner" v-if="isOpen">
-        <textarea
+      <div class="add-list-accordion__inner" v-show="isOpen">
+        <AdjustableTextArea
           class="add-list-accordion__text-field"
           :class="[
             isValidatedText ? '' : 'add-list-accordion__text-field--error',
           ]"
-          ref="area"
-          :style="styles"
-          v-model="name"
-          @input="validateText"
-        ></textarea>
+          :input="name"
+          @get-text="getText"
+          @validate-text="validateText"
+        />
         <span class="add-list-accordion__text-field--length">
           {{ name.length }}/250
         </span>
@@ -48,6 +47,7 @@
 import { defineComponent } from "vue";
 import listRepository from "../repositories/listRepository";
 import store from "@/store";
+import AdjustableTextArea from "./AjustableTextArea.vue";
 import Up from "../components/icons/Up.vue";
 import Down from "../components/icons/Down.vue";
 
@@ -57,17 +57,15 @@ export default defineComponent({
       name: "",
       message: "",
       isValidatedText: true,
-      height: "",
       isOpen: true,
       isMessage: false,
     };
   },
-  watch: {
-    name() {
-      this.resizse();
-    },
-  },
   methods: {
+    getText(text: string) {
+      this.name = text;
+    },
+
     simpleAddList() {
       const userId = store.getters.getUserInfo.id;
 
@@ -109,10 +107,10 @@ export default defineComponent({
       }, 2000);
     },
 
-    validateText() {
+    validateText(text: string) {
       this.isValidatedText = true;
 
-      if (this.name.length > 250) {
+      if (text.length > 250) {
         this.isValidatedText = false;
       }
     },
@@ -120,23 +118,9 @@ export default defineComponent({
     accordionToggle() {
       this.isOpen = !this.isOpen;
     },
-
-    resizse() {
-      const area: any = this.$refs.area;
-      this.height = "auto";
-      this.$nextTick(() => {
-        this.height = area.scrollHeight + "px";
-      });
-    },
-  },
-  computed: {
-    styles(): any {
-      return {
-        height: this.height,
-      };
-    },
   },
   components: {
+    AdjustableTextArea,
     Up,
     Down,
   },

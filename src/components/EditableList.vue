@@ -1,14 +1,13 @@
 <template>
   <div class="list">
     <div class="list__block">
-      <textarea
+      <AdjustableTextArea
         class="list__name"
         :class="[isValidatedText ? '' : 'list__name--error']"
-        ref="area"
-        :style="styles"
-        v-model="name"
-        @input="validateText"
-      ></textarea>
+        :input="list.name"
+        @get-text="getText"
+        @validate-text="validateText"
+      />
       <span class="list__name--length">{{ name.length }}/250</span>
 
       <transition name="fade">
@@ -44,6 +43,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
+import AdjustableTextArea from "./AjustableTextArea.vue";
 import Link from "../components/icons/Link.vue";
 import listRepository from "../repositories/listRepository";
 
@@ -63,18 +63,16 @@ export default defineComponent({
   data() {
     return {
       name: "",
-      height: "",
       isMessage: false,
       message: "",
       isValidatedText: true,
     };
   },
-  watch: {
-    name() {
-      this.resizse();
-    },
-  },
   methods: {
+    getText(text: string) {
+      this.name = text;
+    },
+
     simpleUpdateList() {
       if (this.getListName === this.name) {
         return;
@@ -126,16 +124,16 @@ export default defineComponent({
       }, 2000);
     },
 
-    validateText() {
+    validateText(text: string) {
       this.isValidatedText = true;
 
-      if (!this.name) {
+      if (!text) {
         this.isValidatedText = false;
         this.message = "入力は必須です";
         this.showMessage();
       }
 
-      if (this.name.length > 250) {
+      if (text.length > 250) {
         this.isValidatedText = false;
         this.message = "入力できる文字数は250字以内です";
         this.showMessage();
@@ -146,31 +144,17 @@ export default defineComponent({
       this.name = this.getListName;
       this.isValidatedText = true;
     },
-
-    resizse() {
-      const area: any = this.$refs.area;
-      this.height = "auto";
-      this.$nextTick(() => {
-        this.height = area.scrollHeight + "px";
-      });
-    },
   },
   computed: {
     getListName(): string {
       return this.list!.name;
     },
-
-    styles(): any {
-      return {
-        height: this.height,
-      };
-    },
   },
   mounted() {
     this.setListName();
-    this.resizse();
   },
   components: {
+    AdjustableTextArea,
     Link,
   },
 });
