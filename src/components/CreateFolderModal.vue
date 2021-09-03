@@ -15,6 +15,7 @@
           />
           <div class="modal-window__content--field-error-message">
             <span v-if="errors.folder">{{ errors.folder }}</span>
+            <span v-else-if="errorMessage">{{ errorMessage }}</span>
           </div>
         </div>
         <div>
@@ -31,17 +32,32 @@
 import { defineComponent } from "vue";
 import { Field, Form } from "vee-validate";
 import "../plugins/veeValidate";
+import FoldersRepository from "../repositories/foldersRepository";
+import store from "@/store";
 import Close from "../components/icons/Close.vue";
 
 export default defineComponent({
   data() {
     return {
       folderName: "",
+      errorMessage: "",
     };
   },
   methods: {
     createFolder() {
-      console.log("フォルダ作成");
+      const userId = store.getters.getUserInfo.id;
+
+      FoldersRepository.createFolder({
+        name: this.folderName,
+        user_id: userId,
+      })
+        .then((res) => {
+          this.folderName = "";
+          this.closeModal();
+        })
+        .catch((e) => {
+          this.errorMessage = e.response.data.error.name[0];
+        });
     },
 
     closeModal() {
