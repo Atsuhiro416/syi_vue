@@ -1,9 +1,12 @@
 <template>
-  <div class="folders">folders</div>
+  <div class="folders">
+    <FoldersCard v-for="folder in folders" :key="folder.id" :folder="folder" />
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import FoldersCard from "../components/FolderCard.vue";
 import FoldersRepository from "../repositories/foldersRepository";
 
 export default defineComponent({
@@ -27,7 +30,15 @@ export default defineComponent({
   created() {
     this.getFolders();
   },
+  components: {
+    FoldersCard,
+  },
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.folders {
+  display: flex;
+  flex-wrap: wrap;
+}
+</style>
