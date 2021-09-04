@@ -67,8 +67,15 @@ $sp: 481px;
   cursor: pointer;
   position: relative;
   padding: 30px;
-  margin-right: 3vw;
+  margin-right: 20px;
   margin-bottom: 5vh;
+
+  @include tab {
+    margin-right: 10px;
+  }
+  @include sp {
+    margin-right: 0;
+  }
 
   &:hover {
     transform: scale(1.03);
