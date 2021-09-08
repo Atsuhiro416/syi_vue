@@ -10,6 +10,7 @@
           v-for="folder in folders"
           :key="folder.id"
           :folder="folder"
+          :get-folders="getFolders"
         />
       </div>
     </div>

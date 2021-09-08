@@ -1,12 +1,19 @@
 <template>
   <div class="folder-card">
     <p class="folder-card__name">{{ limitedFolderName }}</p>
-    <Edit class="folder-card__edit" />
+    <Edit class="folder-card__edit" @click="toggleUpdateFolderModal" />
   </div>
+  <UpdateFolderModal
+    v-if="isModal"
+    :folder="folder"
+    :get-folders="getFolders"
+    @toggle-update-folder-modal="toggleUpdateFolderModal"
+  />
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
+import UpdateFolderModal from "./UpdateFolderModal.vue";
 import Edit from "../components/icons/Edit.vue";
 
 interface Folder {
@@ -20,6 +27,17 @@ interface Folder {
 export default defineComponent({
   props: {
     folder: Object as PropType<Folder>,
+    getFolders: Function,
+  },
+  data() {
+    return {
+      isModal: false,
+    };
+  },
+  methods: {
+    toggleUpdateFolderModal() {
+      this.isModal = !this.isModal;
+    },
   },
   computed: {
     limitedFolderName(): string {
@@ -30,6 +48,7 @@ export default defineComponent({
     },
   },
   components: {
+    UpdateFolderModal,
     Edit,
   },
 });
