@@ -1,6 +1,6 @@
 <template>
   <div class="folders">
-    <SideMenu />
+    <SideMenu :get-folders="getFolders" />
     <div class="folders-main">
       <logged-header>
         <template #header-name>フォルダ</template>

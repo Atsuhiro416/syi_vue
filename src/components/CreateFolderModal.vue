@@ -37,6 +37,9 @@ import store from "@/store";
 import Close from "../components/icons/Close.vue";
 
 export default defineComponent({
+  props: {
+    getFolders: Function,
+  },
   data() {
     return {
       folderName: "",
@@ -54,6 +57,9 @@ export default defineComponent({
         .then((res) => {
           this.folderName = "";
           this.closeModal();
+          if (this.$route.path === "/folders") {
+            this.getFolders!();
+          }
         })
         .catch((e) => {
           this.errorMessage = e.response.data.error.name[0];

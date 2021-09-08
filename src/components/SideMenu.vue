@@ -37,7 +37,11 @@
     </transition>
   </div>
 
-  <CreateFolderModal v-if="isModal" @toggle-create-modal="toggleCreateModal" />
+  <CreateFolderModal
+    v-if="isModal"
+    :get-folders="getFolders"
+    @toggle-create-modal="toggleCreateModal"
+  />
 </template>
 
 <script lang="ts">
@@ -49,6 +53,9 @@ import Menu from "../components/icons/Menu.vue";
 import Close from "../components/icons/Close.vue";
 
 export default defineComponent({
+  props: {
+    getFolders: Function,
+  },
   data() {
     return {
       isMenu: true,
