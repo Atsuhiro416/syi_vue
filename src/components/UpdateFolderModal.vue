@@ -27,7 +27,9 @@
         <button class="modal-window__buttons--update" @click="updateFolder">
           更新
         </button>
-        <button class="modal-window__buttons--delete">削除</button>
+        <button class="modal-window__buttons--delete" @click="deleteFolder">
+          削除
+        </button>
       </div>
 
       <Close class="modal-window__content--closer" @click="closeModal" />
@@ -81,6 +83,24 @@ export default defineComponent({
         .catch((e) => {
           this.errorMessage = e.response.data.error.name[0];
         });
+    },
+
+    deleteFolder() {
+      const confirmDeleteFolder = confirm(
+        `${this.folder!.name}\nを本当に削除しますか？`
+      );
+
+      if (confirmDeleteFolder) {
+        FoldersRepository.deleteFolder(this.folder!.id)
+          .then((res) => {
+            this.closeModal();
+            alert(res.data.message);
+            this.getFolders!();
+          })
+          .catch((e) => {
+            alert(e.response.data.message);
+          });
+      }
     },
 
     getFolderName() {
