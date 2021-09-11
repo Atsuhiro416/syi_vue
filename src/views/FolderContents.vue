@@ -7,7 +7,10 @@
         <template #header-name>{{ limitedFolerName }}</template>
       </logged-header>
 
-      <AddListAccordion @get-lists="getLists" />
+      <AddListAccordion
+        @get-lists="getLists"
+        @create-list-in-the-folder="createListInTheFolder"
+      />
 
       <div class="select-boxes">
         <SortListsSelectBox @sort-lists="sortLists" />
@@ -85,6 +88,18 @@ export default defineComponent({
         })
         .catch((e) => {
           console.log(e.response);
+          alert("問題が発生しました。");
+        });
+    },
+
+    createListInTheFolder(listId: number) {
+      foldersListsRepository
+        .attachListToFolder(this.convertFolderId, listId)
+        .then((res) => {
+          this.getLists();
+        })
+        .catch((e) => {
+          console.log(e);
           alert("問題が発生しました。");
         });
     },
