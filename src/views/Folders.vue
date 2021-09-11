@@ -5,9 +5,10 @@
       <logged-header>
         <template #header-name>フォルダ</template>
       </logged-header>
+      <SortListsSelectBox class="folders-sort" @sort-lists="sortFolders" />
       <div class="folders-cards">
         <FoldersCard
-          v-for="folder in folders"
+          v-for="folder in sortedFolders"
           :key="folder.id"
           :folder="folder"
           :get-folders="getFolders"
@@ -21,13 +22,23 @@
 import { defineComponent } from "vue";
 import LoggedHeader from "../components/Header.vue";
 import SideMenu from "../components/SideMenu.vue";
+import SortListsSelectBox from "../components/SortListsSelectBox.vue";
 import FoldersCard from "../components/FolderCard.vue";
 import FoldersRepository from "../repositories/foldersRepository";
+
+interface Folder {
+  id: number;
+  name: string;
+  user_id: number;
+  created_at: string;
+  updated_at: string;
+}
 
 export default defineComponent({
   data() {
     return {
       folders: [],
+      sortId: 1,
     };
   },
   methods: {
@@ -41,13 +52,44 @@ export default defineComponent({
           alert("問題が発生しました。");
         });
     },
+
+    sortFolders(id: number) {
+      this.sortId = id;
+    },
+  },
+  computed: {
+    sortedFolders() {
+      const sortedFolders: Folder[] = this.folders;
+      const sortId = this.sortId;
+
+      sortedFolders.sort((a: Folder, b: Folder): any => {
+        if (sortId === 1) {
+          return a.created_at < b.created_at ? -1 : 1;
+        }
+        if (sortId === 2) {
+          return a.created_at < b.created_at ? 1 : -1;
+        }
+        if (sortId === 3) {
+          return a.updated_at < b.updated_at ? -1 : 1;
+        }
+        if (sortId === 4) {
+          return a.updated_at < b.updated_at ? 1 : -1;
+        }
+      });
+
+      return sortedFolders;
+    },
   },
   created() {
     this.getFolders();
   },
+  updated() {
+    this.sortFolders(this.sortId);
+  },
   components: {
     LoggedHeader,
     SideMenu,
+    SortListsSelectBox,
     FoldersCard,
   },
 });
@@ -101,6 +143,11 @@ $sp: 481px;
   }
   &-nav {
     grid-area: nav;
+  }
+
+  &-sort {
+    margin-top: 2vh;
+    margin-left: 8vw;
   }
 
   &-cards {
