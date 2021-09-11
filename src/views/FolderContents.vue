@@ -13,7 +13,7 @@
       />
 
       <div class="select-boxes">
-        <SortListsSelectBox @sort-lists="sortLists" />
+        <SortByDateSelectBox @sort-by-date="sortLists" />
         <ChangeDisplayLists @change-display-lists="changeDisplayLists" />
       </div>
 
@@ -39,7 +39,7 @@ import SideMenu from "../components/SideMenu.vue";
 import AddListAccordion from "../components/AddListAccordion.vue";
 import List from "../components/List.vue";
 import EditableList from "../components/EditableList.vue";
-import SortListsSelectBox from "../components/SortListsSelectBox.vue";
+import SortByDateSelectBox from "../components/SortByDateSelectBox.vue";
 import ChangeDisplayLists from "../components/ChangeDisplayListsSelectBox.vue";
 import foldersRepository from "../repositories/foldersRepository";
 import foldersListsRepository from "../repositories/foldersListsRepository";
@@ -172,7 +172,7 @@ export default defineComponent({
     AddListAccordion,
     List,
     EditableList,
-    SortListsSelectBox,
+    SortByDateSelectBox,
     ChangeDisplayLists,
   },
 });

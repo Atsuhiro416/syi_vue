@@ -5,7 +5,7 @@
       <logged-header>
         <template #header-name>フォルダ</template>
       </logged-header>
-      <SortListsSelectBox class="folders-sort" @sort-lists="sortFolders" />
+      <SortByDateSelectBox class="folders-sort" @sort-by-date="sortFolders" />
       <div class="folders-cards">
         <FoldersCard
           v-for="folder in sortedFolders"
@@ -22,7 +22,7 @@
 import { defineComponent } from "vue";
 import LoggedHeader from "../components/Header.vue";
 import SideMenu from "../components/SideMenu.vue";
-import SortListsSelectBox from "../components/SortListsSelectBox.vue";
+import SortByDateSelectBox from "../components/SortByDateSelectBox.vue";
 import FoldersCard from "../components/FolderCard.vue";
 import FoldersRepository from "../repositories/foldersRepository";
 
@@ -89,7 +89,7 @@ export default defineComponent({
   components: {
     LoggedHeader,
     SideMenu,
-    SortListsSelectBox,
+    SortByDateSelectBox,
     FoldersCard,
   },
 });
