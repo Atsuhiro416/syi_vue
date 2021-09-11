@@ -1,6 +1,8 @@
 <template>
-  <div class="folder-card">
-    <p class="folder-card__name">{{ limitedFolderName }}</p>
+  <div class="folder-card" @click.self="transitionToTheFolder">
+    <p class="folder-card__name" @click="transitionToTheFolder">
+      {{ limitedFolderName }}
+    </p>
     <Edit class="folder-card__edit" @click="toggleUpdateFolderModal" />
   </div>
   <UpdateFolderModal
@@ -37,6 +39,15 @@ export default defineComponent({
   methods: {
     toggleUpdateFolderModal() {
       this.isModal = !this.isModal;
+    },
+
+    transitionToTheFolder() {
+      this.$router.push({
+        name: "FolderContents",
+        params: {
+          folderId: this.folder!.id,
+        },
+      });
     },
   },
   computed: {
