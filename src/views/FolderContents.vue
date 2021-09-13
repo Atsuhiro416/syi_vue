@@ -1,13 +1,16 @@
 <template>
-  <div class="home">
+  <div class="folder-contents">
     <SideMenu />
 
-    <div class="home-main">
+    <div class="folder-contents-main">
       <logged-header>
-        <template #header-name>リスト</template>
+        <template #header-name>{{ limitedFolerName }}</template>
       </logged-header>
 
-      <AddListAccordion @get-lists="getLists" />
+      <AddListAccordion
+        @get-lists="getLists"
+        @create-list-in-the-folder="createListInTheFolder"
+      />
 
       <div class="select-boxes">
         <SortByDateSelectBox @sort-by-date="sortLists" />
@@ -38,7 +41,8 @@ import List from "../components/List.vue";
 import EditableList from "../components/EditableList.vue";
 import SortByDateSelectBox from "../components/SortByDateSelectBox.vue";
 import ChangeDisplayLists from "../components/ChangeDisplayListsSelectBox.vue";
-import listRepository from "../repositories/listRepository";
+import foldersRepository from "../repositories/foldersRepository";
+import foldersListsRepository from "../repositories/foldersListsRepository";
 
 interface ListInterface {
   id: number;
@@ -48,24 +52,54 @@ interface ListInterface {
   created_at: string;
   updated_at: string;
 }
-
 export default defineComponent({
+  props: {
+    folderId: String,
+  },
   data() {
     return {
       lists: [],
+      folder: {},
+      folderName: "",
       sortListsId: 1,
       displayListsId: 1,
     };
   },
   methods: {
+    getTheFolder() {
+      foldersRepository
+        .showFolder(this.convertFolderId)
+        .then((res) => {
+          const data = res.data.data;
+          this.folder = data;
+          this.folderName = data.name;
+        })
+        .catch((e) => {
+          console.log(e);
+          alert("問題が発生しました。");
+        });
+    },
+
     getLists() {
-      listRepository
-        .getUserLists()
+      foldersListsRepository
+        .getListsInFolder(this.convertFolderId)
         .then((res) => {
           this.lists = res.data.data;
         })
         .catch((e) => {
           console.log(e.response);
+          alert("問題が発生しました。");
+        });
+    },
+
+    createListInTheFolder(listId: number) {
+      foldersListsRepository
+        .attachListToFolder(this.convertFolderId, listId)
+        .then((res) => {
+          this.getLists();
+        })
+        .catch((e) => {
+          console.log(e);
           alert("問題が発生しました。");
         });
     },
@@ -100,8 +134,33 @@ export default defineComponent({
 
       return sortedLists;
     },
+
+    convertFolderId(): number {
+      return parseInt(this.folderId!);
+    },
+
+    limitedFolerName(): string {
+      const width = window.innerWidth;
+      const folderName = this.folderName;
+      const folderNameLength = this.folderName.length;
+
+      if (width <= 1024 && folderNameLength > 10) {
+        return folderName.substring(0, 10) + "...";
+      }
+
+      if (width <= 1200 && folderNameLength > 15) {
+        return folderName.substring(0, 15) + "...";
+      }
+
+      if (folderNameLength > 20) {
+        return folderName.substring(0, 20) + "...";
+      }
+
+      return folderName;
+    },
   },
   created() {
+    this.getTheFolder();
     this.getLists();
   },
   updated() {
@@ -142,7 +201,7 @@ $sp: 481px;
   }
 }
 
-.home {
+.folder-contents {
   width: 100%;
   display: grid;
   grid-template-rows: auto;

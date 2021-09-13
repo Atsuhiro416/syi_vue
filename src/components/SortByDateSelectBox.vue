@@ -3,7 +3,7 @@
     class="select-box"
     name="sort"
     v-model="currentSortId"
-    @change="sortLists"
+    @change="sortByDate"
   >
     <option v-for="sort in sorts" :key="sort.id" :value="sort.id">
       {{ sort.value }}
@@ -27,8 +27,8 @@ export default defineComponent({
     };
   },
   methods: {
-    sortLists() {
-      this.$emit("sort-lists", this.currentSortId);
+    sortByDate() {
+      this.$emit("sort-by-date", this.currentSortId);
     },
   },
 });

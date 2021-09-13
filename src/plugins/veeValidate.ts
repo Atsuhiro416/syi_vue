@@ -34,6 +34,17 @@ defineRule("min", (value: string, [limit]: any) => {
   return true;
 });
 
+defineRule("max", (value: string, [limit]: any) => {
+  if (!value || !value.length) {
+    return true;
+  }
+  if (value.length > limit) {
+    return `入力できる文字数は${limit}字以内です`;
+  }
+
+  return true;
+});
+
 defineRule("alpha_num", (value: string) => {
   if (!value || !value.length) {
     return true;

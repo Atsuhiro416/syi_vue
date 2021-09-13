@@ -4,6 +4,7 @@ import Signup from "../views/Signup.vue";
 import Home from "../views/Home.vue";
 import Account from "../views/UserAccount.vue";
 import Folders from "../views/Folders.vue";
+import FolderContents from "../views/FolderContents.vue";
 import CreateList from "../views/CreateList.vue";
 
 const routes: Array<RouteRecordRaw> = [
@@ -32,6 +33,12 @@ const routes: Array<RouteRecordRaw> = [
     path: "/folders",
     name: "Folders",
     component: Folders,
+  },
+  {
+    path: "/folders/:folderId",
+    name: "FolderContents",
+    component: FolderContents,
+    props: true,
   },
   {
     path: "/create-list",

@@ -93,6 +93,9 @@ export default defineComponent({
           this.showMessage();
           this.name = "";
           this.$emit("get-lists");
+          if (this.$route.name === "FolderContents") {
+            this.$emit("create-list-in-the-folder", res.data.data.id);
+          }
         })
         .catch((e) => {
           this.message = e.response.data.error.name[0];
