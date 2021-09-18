@@ -68,10 +68,13 @@
             {{ errorMessage.comment }}
           </p>
         </div>
-
-        <button class="form__button" @click="createList">作成</button>
       </div>
       <!-- /.create-list__form -->
+
+      <AddFolderTable />
+      <div class="create-list__button">
+        <button class="form__button" @click="createList">作成</button>
+      </div>
     </div>
     <!-- /.create-list-main -->
   </div>
@@ -84,6 +87,7 @@ import store from "@/store";
 import LoggedHeader from "../components/Header.vue";
 import SideMenu from "../components/SideMenu.vue";
 import AdjustableTextArea from "../components/AjustableTextArea.vue";
+import AddFolderTable from "../components/AddFolderTable.vue";
 import listRepository from "../repositories/listRepository";
 import { Field, Form } from "vee-validate";
 import "../plugins/veeValidate";
@@ -182,6 +186,7 @@ export default defineComponent({
     LoggedHeader,
     SideMenu,
     AdjustableTextArea,
+    AddFolderTable,
     Form,
     Field,
   },
@@ -236,6 +241,16 @@ $sp: 481px;
     width: 100%;
     margin-top: 5vh;
     text-align: center;
+  }
+
+  &__button {
+    width: 100%;
+    margin: 5vh 0;
+    text-align: center;
+
+    @include tab {
+      margin: 2vh 0;
+    }
   }
 
   .form {
