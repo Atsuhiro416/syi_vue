@@ -2,7 +2,7 @@
   <div class="add-folder">
     <div class="add-folder__top">
       <p class="add-folder__name">フォルダ</p>
-      <Plus />
+      <Plus @click="toggleModal" />
     </div>
     <hr class="add-folder__line" />
     <div class="add-folder__folder-lists">
@@ -11,17 +11,28 @@
       </div>
     </div>
   </div>
+
+  <AddFolderModal v-if="isModal" :toggle-modal="toggleModal" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import AddFolderModal from "./AddFolderModal.vue";
 import Plus from "./icons/Plus.vue";
 
 export default defineComponent({
   data() {
-    return {};
+    return {
+      isModal: false,
+    };
+  },
+  methods: {
+    toggleModal() {
+      this.isModal = !this.isModal;
+    },
   },
   components: {
+    AddFolderModal,
     Plus,
   },
 });
