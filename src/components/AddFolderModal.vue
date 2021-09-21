@@ -9,6 +9,7 @@
           :key="folder.id"
           :folder="folder"
           :just-display="true"
+          @get-the-folder="getTheFolder"
         />
       </div>
 
@@ -23,13 +24,22 @@ import FoldersRepository from "../repositories/foldersRepository";
 import FolderCard from "../components/FolderCard.vue";
 import Close from "../components/icons/Close.vue";
 
+interface Folder {
+  id: number;
+  name: string;
+}
+
 export default defineComponent({
   props: {
     toggleModal: Function,
   },
-  data() {
+  data(): {
+    folders: [];
+    selectedFolders: Folder[];
+  } {
     return {
       folders: [],
+      selectedFolders: [],
     };
   },
   methods: {
@@ -42,6 +52,17 @@ export default defineComponent({
           console.log(e.resopnse);
           alert("問題が発生しました。");
         });
+    },
+
+    getTheFolder(id: number, name: string) {
+      const folder = {
+        id: id,
+        name: name,
+      };
+      const isFolder = this.selectedFolders.some((e) => e.id === id);
+      if (!isFolder) {
+        this.selectedFolders.push(folder);
+      }
     },
   },
   created() {

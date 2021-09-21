@@ -36,6 +36,7 @@ export default defineComponent({
     getFolders: Function,
     justDisplay: Boolean,
   },
+  emits: ["getTheFolder"],
   data() {
     return {
       isModal: false,
@@ -48,6 +49,7 @@ export default defineComponent({
 
     transitionToTheFolder() {
       if (this.justDisplay) {
+        this.sendFolderIdName();
         return;
       }
 
@@ -57,6 +59,10 @@ export default defineComponent({
           folderId: this.folder!.id,
         },
       });
+    },
+
+    sendFolderIdName() {
+      this.$emit("getTheFolder", this.folder!.id, this.folder!.name);
     },
   },
   computed: {
