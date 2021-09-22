@@ -71,7 +71,7 @@
       </div>
       <!-- /.create-list__form -->
 
-      <AddFolderTable />
+      <AddFolderTable @get-folder-ids="getFolderIds" />
       <div class="create-list__button">
         <button class="form__button" @click="createList">作成</button>
       </div>
@@ -93,7 +93,19 @@ import { Field, Form } from "vee-validate";
 import "../plugins/veeValidate";
 
 export default defineComponent({
-  data() {
+  data(): {
+    name: string;
+    link: string;
+    comment: string;
+    isValidatedName: boolean;
+    isValidatedComment: boolean;
+    errorMessage: {
+      name: string;
+      comment: string;
+      link: string;
+    };
+    selectedFolderIds: number[];
+  } {
     return {
       name: "",
       link: "",
@@ -105,6 +117,7 @@ export default defineComponent({
         comment: "",
         link: "",
       },
+      selectedFolderIds: [],
     };
   },
   methods: {
@@ -180,6 +193,10 @@ export default defineComponent({
 
     clearLinkErrorMessage() {
       this.errorMessage.link = "";
+    },
+
+    getFolderIds(id: number) {
+      this.selectedFolderIds.push(id);
     },
   },
   components: {

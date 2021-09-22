@@ -34,6 +34,7 @@ interface Folder {
 }
 
 export default defineComponent({
+  emits: ["getFolderIds"],
   data(): {
     isModal: boolean;
     folders: Folder[];
@@ -48,6 +49,7 @@ export default defineComponent({
       const isFolder = this.folders.some((e) => e.id === folder.id);
       if (!isFolder) {
         this.folders.push(folder);
+        this.$emit("getFolderIds", folder.id);
       }
     },
 
