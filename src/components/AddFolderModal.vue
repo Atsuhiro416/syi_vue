@@ -24,22 +24,13 @@ import FoldersRepository from "../repositories/foldersRepository";
 import FolderCard from "../components/FolderCard.vue";
 import Close from "../components/icons/Close.vue";
 
-interface Folder {
-  id: number;
-  name: string;
-}
-
 export default defineComponent({
   props: {
     toggleModal: Function,
   },
-  data(): {
-    folders: [];
-    selectedFolders: Folder[];
-  } {
+  data() {
     return {
       folders: [],
-      selectedFolders: [],
     };
   },
   methods: {
