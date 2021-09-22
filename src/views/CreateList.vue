@@ -71,7 +71,10 @@
       </div>
       <!-- /.create-list__form -->
 
-      <AddFolderTable @get-folder-ids="getFolderIds" />
+      <AddFolderTable
+        @get-folder-ids="getFolderIds"
+        @delete-folder-id="deleteFolderId"
+      />
       <div class="create-list__button">
         <button class="form__button" @click="createList">作成</button>
       </div>
@@ -197,6 +200,11 @@ export default defineComponent({
 
     getFolderIds(id: number) {
       this.selectedFolderIds.push(id);
+    },
+
+    deleteFolderId(id: number) {
+      const remainFolders = this.selectedFolderIds.filter((e) => e !== id);
+      this.selectedFolderIds = remainFolders;
     },
   },
   components: {

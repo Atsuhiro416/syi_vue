@@ -12,7 +12,7 @@
         class="add-folder__folder"
       >
         <p class="add-folder__folder-name">{{ folder.name }}</p>
-        <Minus />
+        <Minus @click="deleteFolder(folder.id)" />
       </div>
     </div>
   </div>
@@ -36,7 +36,7 @@ interface Folder {
 }
 
 export default defineComponent({
-  emits: ["getFolderIds"],
+  emits: ["getFolderIds", "deleteFolderId"],
   data(): {
     isModal: boolean;
     folders: Folder[];
@@ -53,6 +53,12 @@ export default defineComponent({
         this.folders.push(folder);
         this.$emit("getFolderIds", folder.id);
       }
+    },
+
+    deleteFolder(id: number) {
+      const remainFolders = this.folders.filter((e) => e.id !== id);
+      this.folders = remainFolders;
+      this.$emit("deleteFolderId", id);
     },
 
     toggleModal() {
