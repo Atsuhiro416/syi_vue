@@ -12,6 +12,7 @@
         class="add-folder__folder"
       >
         <p class="add-folder__folder-name">{{ folder.name }}</p>
+        <Minus />
       </div>
     </div>
   </div>
@@ -27,6 +28,7 @@
 import { defineComponent } from "vue";
 import AddFolderModal from "./AddFolderModal.vue";
 import Plus from "./icons/Plus.vue";
+import Minus from "./icons/Minus.vue";
 
 interface Folder {
   id: number;
@@ -60,6 +62,7 @@ export default defineComponent({
   components: {
     AddFolderModal,
     Plus,
+    Minus,
   },
 });
 </script>
