@@ -6,13 +6,21 @@
     </div>
     <hr class="add-folder__line" />
     <div class="add-folder__folder-lists">
-      <div class="add-folder__folder">
-        <p class="add-folder__folder-name">フォルダ名</p>
+      <div
+        v-for="folder in folders"
+        :key="folder.id"
+        class="add-folder__folder"
+      >
+        <p class="add-folder__folder-name">{{ folder.name }}</p>
       </div>
     </div>
   </div>
 
-  <AddFolderModal v-if="isModal" :toggle-modal="toggleModal" />
+  <AddFolderModal
+    v-if="isModal"
+    :toggle-modal="toggleModal"
+    @set-folder="setFolder"
+  />
 </template>
 
 <script lang="ts">
@@ -20,13 +28,29 @@ import { defineComponent } from "vue";
 import AddFolderModal from "./AddFolderModal.vue";
 import Plus from "./icons/Plus.vue";
 
+interface Folder {
+  id: number;
+  name: string;
+}
+
 export default defineComponent({
-  data() {
+  data(): {
+    isModal: boolean;
+    folders: Folder[];
+  } {
     return {
       isModal: false,
+      folders: [],
     };
   },
   methods: {
+    setFolder(folder: Folder) {
+      const isFolder = this.folders.some((e) => e.id === folder.id);
+      if (!isFolder) {
+        this.folders.push(folder);
+      }
+    },
+
     toggleModal() {
       this.isModal = !this.isModal;
     },

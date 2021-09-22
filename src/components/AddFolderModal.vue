@@ -59,10 +59,7 @@ export default defineComponent({
         id: id,
         name: name,
       };
-      const isFolder = this.selectedFolders.some((e) => e.id === id);
-      if (!isFolder) {
-        this.selectedFolders.push(folder);
-      }
+      this.$emit("set-folder", folder);
     },
   },
   created() {
