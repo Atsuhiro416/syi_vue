@@ -74,6 +74,7 @@
       <AddFolderTable
         @get-folder-ids="getFolderIds"
         @delete-folder-id="deleteFolderId"
+        ref="folders"
       />
       <div class="create-list__button">
         <button class="form__button" @click="createList">作成</button>
@@ -92,6 +93,7 @@ import SideMenu from "../components/SideMenu.vue";
 import AdjustableTextArea from "../components/AjustableTextArea.vue";
 import AddFolderTable from "../components/AddFolderTable.vue";
 import listRepository from "../repositories/listRepository";
+import foldersListsRepository from "../repositories/foldersListsRepository";
 import { Field, Form } from "vee-validate";
 import "../plugins/veeValidate";
 
@@ -124,7 +126,7 @@ export default defineComponent({
     };
   },
   methods: {
-    createList() {
+    async createList() {
       if (
         !this.validateName(this.name) ||
         !this.validateComment(this.comment)
@@ -134,7 +136,7 @@ export default defineComponent({
 
       const userId = store.getters.getUserInfo.id;
 
-      listRepository
+      const createList = await listRepository
         .createList({
           name: this.name,
           link: this.link,
@@ -144,6 +146,7 @@ export default defineComponent({
         .then((res) => {
           //分割代入でname,link,commentを空に
           [this.name, this.link, this.comment] = ["", "", ""];
+          return res.data.data.id;
         })
         .catch((e) => {
           const error = e.response;
@@ -155,6 +158,29 @@ export default defineComponent({
             `${error.status} ${error.statusText}\n問題が発生しました。\nもう一度操作してください。`
           );
           return false;
+        });
+
+      const addFolderTable: any = this.$refs.folders;
+      if (createList) {
+        this.selectedFolderIds.forEach((e) => {
+          this.attachListToFolder(e, createList);
+        });
+        this.selectedFolderIds = [];
+        addFolderTable.clearFolders();
+      }
+    },
+
+    attachListToFolder(folderId: number, listId: number) {
+      foldersListsRepository
+        .attachListToFolder(folderId, listId)
+        .then((res) => {
+          return res;
+        })
+        .catch((e) => {
+          const error = e.response;
+          alert(
+            `${error.status} ${error.statusText}\n問題が発生しました。\nもう一度操作してください。`
+          );
         });
     },
 

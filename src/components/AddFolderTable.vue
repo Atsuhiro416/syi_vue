@@ -61,6 +61,10 @@ export default defineComponent({
       this.$emit("deleteFolderId", id);
     },
 
+    clearFolders() {
+      this.folders = [];
+    },
+
     toggleModal() {
       this.isModal = !this.isModal;
     },
