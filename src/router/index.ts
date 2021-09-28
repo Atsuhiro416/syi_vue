@@ -6,6 +6,7 @@ import Account from "../views/UserAccount.vue";
 import Folders from "../views/Folders.vue";
 import FolderContents from "../views/FolderContents.vue";
 import CreateList from "../views/CreateList.vue";
+import ListDetail from "../views/ListDetail.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -44,6 +45,12 @@ const routes: Array<RouteRecordRaw> = [
     path: "/create-list",
     name: "CreateList",
     component: CreateList,
+  },
+  {
+    path: "/lists/:listId",
+    name: "ListDetail",
+    component: ListDetail,
+    props: true,
   },
 ];
 
