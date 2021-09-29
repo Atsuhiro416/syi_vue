@@ -1,7 +1,7 @@
 <template>
   <div class="list">
     <div class="list__block">
-      <p class="list__name">{{ list.name }}</p>
+      <p class="list__name" @click="transitionToListDetail">{{ list.name }}</p>
       <div class="list__info">
         <div class="list__dates">
           <span class="list__dates--created"
@@ -28,6 +28,16 @@ import Link from "../components/icons/Link.vue";
 export default defineComponent({
   props: {
     list: Object,
+  },
+  methods: {
+    transitionToListDetail() {
+      this.$router.push({
+        name: "ListDetail",
+        params: {
+          listId: this.list!.id,
+        },
+      });
+    },
   },
   components: {
     Link,
@@ -81,6 +91,11 @@ $sp: 481px;
     margin-bottom: 2vh;
     white-space: pre-line;
     word-break: break-word;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.7;
+    }
 
     @include pc {
       font-size: 1.7rem;
