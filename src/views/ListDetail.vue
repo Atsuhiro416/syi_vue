@@ -276,6 +276,11 @@ export default defineComponent({
     },
     validateComment(text: string) {
       this.isValidatedComment = true;
+
+      if (text === null) {
+        return true;
+      }
+
       if (text.length > 250) {
         this.isValidatedComment = false;
         this.errorMessage.comment = "入力できる文字数は250字以内です";
