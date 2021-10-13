@@ -89,6 +89,7 @@
       <AddFolderTable
         @get-folder-ids="getFolderIds"
         @delete-folder-id="deleteFolderId"
+        :list-folders="list.folders"
         ref="folders"
       />
       <div class="list-detail__buttons">
@@ -113,6 +114,7 @@ import AdjustableTextArea from "../components/AjustableTextArea.vue";
 import AddFolderTable from "../components/AddFolderTable.vue";
 import Link from "../components/icons/Link.vue";
 import listRepository from "../repositories/listRepository";
+import foldersListsRepository from "../repositories/foldersListsRepository";
 import { Field, Form } from "vee-validate";
 import "../plugins/veeValidate";
 
@@ -148,6 +150,7 @@ export default defineComponent({
       link: string;
     };
     selectedFolderIds: number[];
+    deletedFolderIds: number[];
   } {
     return {
       list: {
@@ -171,6 +174,7 @@ export default defineComponent({
         link: "",
       },
       selectedFolderIds: [],
+      deletedFolderIds: [],
     };
   },
   methods: {
@@ -196,7 +200,7 @@ export default defineComponent({
         });
     },
 
-    updateList() {
+    async updateList() {
       if (
         !this.validateName(this.list.name) ||
         !this.validateComment(this.list.comment)
@@ -206,19 +210,32 @@ export default defineComponent({
       if (
         !this.comparisonListName() &&
         !this.comparisonListLink() &&
-        !this.comparisonListComment()
+        !this.comparisonListComment() &&
+        !this.selectedFolderIds.length &&
+        !this.deletedFolderIds.length
       ) {
         return false;
       }
 
-      listRepository
+      await Promise.all(
+        this.selectedFolderIds.map(async (id) => {
+          await this.attachListToFolder(id, this.list.id);
+        })
+      );
+      await Promise.all(
+        this.deletedFolderIds.map(async (id) => {
+          await this.detachListToFolder(id, this.list.id);
+        })
+      );
+
+      await listRepository
         .updateList(this.convertListId, {
           name: this.list.name,
           link: this.list.link,
           comment: this.list.comment,
         })
         .then((res) => {
-          this.getList();
+          return res.data.data;
         })
         .catch((e) => {
           const error = e.response;
@@ -230,6 +247,11 @@ export default defineComponent({
             `${error.status} ${error.statusText}\n問題が発生しました。\nもう一度操作してください。`
           );
         });
+
+      this.getList();
+
+      this.selectedFolderIds = [];
+      this.deletedFolderIds = [];
     },
 
     deleteList() {
@@ -247,6 +269,63 @@ export default defineComponent({
             alert(e.response.data.message);
           });
       }
+    },
+
+    async attachListToFolder(folderId: number, listId: number) {
+      await foldersListsRepository
+        .attachListToFolder(folderId, listId)
+        .then((res) => {
+          return res;
+        })
+        .catch((e) => {
+          const error = e.response;
+          alert(
+            `${error.status} ${error.statusText}\n問題が発生しました。\nもう一度操作してください。`
+          );
+          return error;
+        });
+    },
+
+    async detachListToFolder(folderId: number, listId: number) {
+      await foldersListsRepository
+        .detachListToFolder(folderId, listId)
+        .then((res) => {
+          return res;
+        })
+        .catch((e) => {
+          const error = e.response;
+          alert(
+            `${error.status} ${error.statusText}\n問題が発生しました。\nもう一度操作してください。`
+          );
+          return error;
+        });
+    },
+
+    getFolderIds(id: number) {
+      const hasListFolder = this.list.folders.some((e) => e.id === id);
+      if (!hasListFolder) {
+        this.selectedFolderIds.push(id);
+      }
+
+      //deletedFolderIdsにidが存在したらそれを削除
+      const isDeletedFolderId = this.deletedFolderIds.some((e) => e === id);
+      if (isDeletedFolderId) {
+        const remainDeletedFolderIds = this.deletedFolderIds.filter(
+          (e) => e !== id
+        );
+        this.deletedFolderIds = remainDeletedFolderIds;
+      }
+    },
+
+    deleteFolderId(id: number) {
+      const hasListFolder = this.list.folders.some((e) => e.id === id);
+      const hasFolderId = this.deletedFolderIds.some((e) => e === id);
+      if (hasListFolder && !hasFolderId) {
+        this.deletedFolderIds.push(id);
+      }
+
+      const remainFolderIds = this.selectedFolderIds.filter((e) => e !== id);
+      this.selectedFolderIds = remainFolderIds;
     },
 
     getName(text: string) {
@@ -311,15 +390,6 @@ export default defineComponent({
 
     clearLinkErrorMessage() {
       this.errorMessage.link = "";
-    },
-
-    getFolderIds(id: number) {
-      this.selectedFolderIds.push(id);
-    },
-
-    deleteFolderId(id: number) {
-      const remainFolders = this.selectedFolderIds.filter((e) => e !== id);
-      this.selectedFolderIds = remainFolders;
     },
   },
   computed: {

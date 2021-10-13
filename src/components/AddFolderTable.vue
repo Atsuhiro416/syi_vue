@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import AddFolderModal from "./AddFolderModal.vue";
 import Plus from "./icons/Plus.vue";
 import Minus from "./icons/Minus.vue";
@@ -36,6 +36,9 @@ interface Folder {
 }
 
 export default defineComponent({
+  props: {
+    listFolders: Array as PropType<Folder[]>,
+  },
   emits: ["getFolderIds", "deleteFolderId"],
   data(): {
     isModal: boolean;
@@ -45,6 +48,11 @@ export default defineComponent({
       isModal: false,
       folders: [],
     };
+  },
+  watch: {
+    listFolders() {
+      this.getListFolders();
+    },
   },
   methods: {
     setFolder(folder: Folder) {
@@ -59,6 +67,12 @@ export default defineComponent({
       const remainFolders = this.folders.filter((e) => e.id !== id);
       this.folders = remainFolders;
       this.$emit("deleteFolderId", id);
+    },
+
+    getListFolders() {
+      if (this.listFolders) {
+        this.folders = [...this.listFolders];
+      }
     },
 
     clearFolders() {
