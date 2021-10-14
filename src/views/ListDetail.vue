@@ -6,100 +6,116 @@
         <template #header-name>{{ limitedListName }}</template>
       </logged-header>
 
-      <div class="list-detail__form">
-        <div class="form__field">
-          <p class="form__field--name">名前</p>
-          <AdjustableTextArea
-            class="form__field--input"
-            :class="[isValidatedName ? '' : 'form__field--error']"
-            :input="list.name"
-            @get-text="getName"
-            @validate-text="validateName"
-          />
-          <span class="form__field--input-length"
-            >{{ list.name.length }}/250</span
+      <div class="list-detail__content">
+        <div class="list-detail__lists-folders">
+          <router-link
+            :to="{ path: `/folders/${folder.id}` }"
+            v-for="folder in list.folders"
+            :key="folder.id"
+            class="list-detail__folder"
+            >{{ limitedFolderName(folder.name) }}</router-link
           >
-          <div v-if="isValidatedName" class="form__field--empty"></div>
-          <p class="form__field--error-message" v-if="!isValidatedName">
-            {{ errorMessage.name }}
-          </p>
         </div>
 
-        <div class="form__field">
-          <div class="form__field--name">
-            <p class="form__field--list-name">リンク</p>
-            <a
-              class="form__field--list-link"
-              target="_blank"
-              rel="noopener noreferrer"
-              v-if="list.link"
-              :href="list.link"
-            >
-              <Link />
-            </a>
-          </div>
-          <Form v-slot="{ errors }">
-            <Field
-              name="link"
-              v-model.trim="list.link"
+        <div class="list-detail__form">
+          <div class="form__field">
+            <p class="form__field--name">名前</p>
+            <AdjustableTextArea
               class="form__field--input"
-              :class="[
-                errors.link || errorMessage.link ? 'form__field--error' : '',
-              ]"
-              rules="max:250"
-              @input="clearLinkErrorMessage"
+              :class="[isValidatedName ? '' : 'form__field--error']"
+              :input="list.name"
+              @get-text="getName"
+              @validate-text="validateName"
             />
             <span class="form__field--input-length"
-              >{{ listLinkLength }}/250</span
+              >{{ list.name.length }}/250</span
             >
-            <div
-              :class="[
-                errors.link || errorMessage.link ? '' : 'form__field--empty',
-              ]"
-            ></div>
-            <p class="form__field--error-message" v-if="errors.link">
-              {{ errors.link }}
+            <div v-if="isValidatedName" class="form__field--empty"></div>
+            <p class="form__field--error-message" v-if="!isValidatedName">
+              {{ errorMessage.name }}
             </p>
-            <p class="form__field--error-message" v-else-if="errorMessage.link">
-              {{ errorMessage.link }}
-            </p>
-          </Form>
-        </div>
+          </div>
 
-        <div class="form__field">
-          <p class="form__field--name">コメント</p>
-          <AdjustableTextArea
-            class="form__field--input"
-            :class="[isValidatedComment ? '' : 'form__field--error']"
-            :input="list.comment"
-            @get-text="getComment"
-            @validate-text="validateComment"
-          />
-          <span class="form__field--input-length"
-            >{{ listCommentLength }}/250</span
-          >
-          <div v-if="isValidatedComment" class="form__field--empty"></div>
-          <p class="form__field--error-message" v-if="!isValidatedComment">
-            {{ errorMessage.comment }}
-          </p>
+          <div class="form__field">
+            <div class="form__field--name">
+              <p class="form__field--list-name">リンク</p>
+              <a
+                class="form__field--list-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                v-if="list.link"
+                :href="list.link"
+              >
+                <Link />
+              </a>
+            </div>
+            <Form v-slot="{ errors }">
+              <Field
+                name="link"
+                v-model.trim="list.link"
+                class="form__field--input"
+                :class="[
+                  errors.link || errorMessage.link ? 'form__field--error' : '',
+                ]"
+                rules="max:250"
+                @input="clearLinkErrorMessage"
+              />
+              <span class="form__field--input-length"
+                >{{ listLinkLength }}/250</span
+              >
+              <div
+                :class="[
+                  errors.link || errorMessage.link ? '' : 'form__field--empty',
+                ]"
+              ></div>
+              <p class="form__field--error-message" v-if="errors.link">
+                {{ errors.link }}
+              </p>
+              <p
+                class="form__field--error-message"
+                v-else-if="errorMessage.link"
+              >
+                {{ errorMessage.link }}
+              </p>
+            </Form>
+          </div>
+
+          <div class="form__field">
+            <p class="form__field--name">コメント</p>
+            <AdjustableTextArea
+              class="form__field--input"
+              :class="[isValidatedComment ? '' : 'form__field--error']"
+              :input="list.comment"
+              @get-text="getComment"
+              @validate-text="validateComment"
+            />
+            <span class="form__field--input-length"
+              >{{ listCommentLength }}/250</span
+            >
+            <div v-if="isValidatedComment" class="form__field--empty"></div>
+            <p class="form__field--error-message" v-if="!isValidatedComment">
+              {{ errorMessage.comment }}
+            </p>
+          </div>
+        </div>
+        <!-- /.list-detail__form -->
+
+        <AddFolderTable
+          @get-folder-ids="getFolderIds"
+          @delete-folder-id="deleteFolderId"
+          :list-folders="list.folders"
+          ref="folders"
+        />
+        <div class="list-detail__buttons">
+          <button class="list-detail__buttons--update" @click="updateList">
+            更新
+          </button>
+          <button class="list-detail__buttons--delete" @click="deleteList">
+            削除
+          </button>
         </div>
       </div>
-      <!-- /.list-detail__form -->
-
-      <AddFolderTable
-        @get-folder-ids="getFolderIds"
-        @delete-folder-id="deleteFolderId"
-        :list-folders="list.folders"
-        ref="folders"
-      />
-      <div class="list-detail__buttons">
-        <button class="list-detail__buttons--update" @click="updateList">
-          更新
-        </button>
-        <button class="list-detail__buttons--delete" @click="deleteList">
-          削除
-        </button>
-      </div>
+      <!-- /.list-detail__content -->
     </div>
     <!-- /.list-detail-main -->
   </div>
@@ -430,6 +446,17 @@ export default defineComponent({
 
       return listName;
     },
+
+    limitedFolderName() {
+      //computedで引数を指定したいときは返り値に関数を書いてそこ記述する
+      return (folderName: string) => {
+        if (folderName.length > 30) {
+          return folderName.substring(0, 30) + "...";
+        }
+
+        return folderName;
+      };
+    },
   },
   created() {
     this.getList();
@@ -516,6 +543,22 @@ $sp: 481px;
   }
   &-nav {
     grid-area: nav;
+  }
+
+  &__content {
+    padding: 2vh 0vw 5vh;
+  }
+
+  &__lists-folders {
+    padding: 0vh 5vw;
+  }
+
+  &__folder {
+    margin-right: 20px;
+    margin-bottom: 10px;
+    display: inline-block;
+    color: #000000;
+    opacity: 0.5;
   }
 
   &__form {
