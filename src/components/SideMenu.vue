@@ -15,7 +15,7 @@
             @click="closeMenuForUnderTabScreen"
             >リスト</router-link
           >
-          <Plus />
+          <Plus @click="$router.push({ name: 'CreateList' })" />
         </li>
         <li class="side-nav__list">
           <router-link class="side-nav__list-link" :to="{ name: 'Folders' }"

@@ -28,7 +28,12 @@
           >
             追加
           </button>
-          <button class="add-list-accordion__buttons--create">作成</button>
+          <button
+            class="add-list-accordion__buttons--create"
+            @click="$router.push({ name: 'CreateList' })"
+          >
+            作成
+          </button>
         </div>
       </div>
     </transition>

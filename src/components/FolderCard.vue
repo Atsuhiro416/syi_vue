@@ -3,7 +3,11 @@
     <p class="folder-card__name" @click="transitionToTheFolder">
       {{ limitedFolderName }}
     </p>
-    <Edit class="folder-card__edit" @click="toggleUpdateFolderModal" />
+    <Edit
+      v-if="!justDisplay"
+      class="folder-card__edit"
+      @click="toggleUpdateFolderModal"
+    />
   </div>
   <UpdateFolderModal
     v-if="isModal"
@@ -30,7 +34,9 @@ export default defineComponent({
   props: {
     folder: Object as PropType<Folder>,
     getFolders: Function,
+    justDisplay: Boolean,
   },
+  emits: ["getTheFolder"],
   data() {
     return {
       isModal: false,
@@ -42,12 +48,21 @@ export default defineComponent({
     },
 
     transitionToTheFolder() {
+      if (this.justDisplay) {
+        this.sendFolderIdName();
+        return;
+      }
+
       this.$router.push({
         name: "FolderContents",
         params: {
           folderId: this.folder!.id,
         },
       });
+    },
+
+    sendFolderIdName() {
+      this.$emit("getTheFolder", this.folder!.id, this.folder!.name);
     },
   },
   computed: {
