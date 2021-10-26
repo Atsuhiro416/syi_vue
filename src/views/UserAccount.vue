@@ -16,6 +16,11 @@
           フォルダ数：{{ numberWithDigits(counts.folder) }}
         </p>
       </div>
+
+      <div class="account-buttons">
+        <button class="account-buttons__change">パスワード変更</button>
+        <button class="account-buttons__delete">アカウント削除</button>
+      </div>
     </div>
   </div>
 </template>
@@ -114,6 +119,37 @@ $sp: 481px;
   }
 }
 
+@mixin button($color) {
+  display: block;
+  margin: 5vh auto;
+  color: #ffffff;
+  background-color: $color;
+  width: 20vw;
+  line-height: 2;
+  border-radius: 10px;
+  font-size: 20px;
+  box-shadow: 0 4px 0 darken($color, 10%);
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &:active {
+    transform: translate3d(0, 4px, 0);
+    box-shadow: none;
+  }
+
+  @include tab {
+    margin-top: 5%;
+    width: 40%;
+    font-size: 1.5rem;
+  }
+  @include sp {
+    margin-top: 10%;
+    width: 80%;
+  }
+}
+
 .account {
   width: 100%;
   display: grid;
@@ -145,6 +181,16 @@ $sp: 481px;
       overflow-wrap: break-word;
       padding-left: 1.2em;
       text-indent: -1.2em;
+    }
+  }
+
+  &-buttons {
+    &__change {
+      @include button(#ffa726);
+    }
+
+    &__delete {
+      @include button(#f44336);
     }
   }
 }
