@@ -18,10 +18,20 @@
       </div>
 
       <div class="account-buttons">
-        <button class="account-buttons__change">パスワード変更</button>
+        <button
+          class="account-buttons__change"
+          @click="toggleChangePasswordModal"
+        >
+          パスワード変更
+        </button>
         <button class="account-buttons__delete">アカウント削除</button>
       </div>
     </div>
+
+    <ChangePasswordModal
+      v-if="isModal.changePassword"
+      :toggle-change-password-modal="toggleChangePasswordModal"
+    />
   </div>
 </template>
 
@@ -30,6 +40,7 @@ import { defineComponent } from "vue";
 import store from "@/store";
 import LoggedHeader from "../components/Header.vue";
 import SideMenu from "../components/SideMenu.vue";
+import ChangePasswordModal from "../components/ChangePasswordModal.vue";
 import listRepository from "../repositories/listRepository";
 import foldersRepository from "../repositories/foldersRepository";
 
@@ -40,6 +51,9 @@ export default defineComponent({
       counts: {
         list: 0,
         folder: 0,
+      },
+      isModal: {
+        changePassword: false,
       },
     };
   },
@@ -75,6 +89,10 @@ export default defineComponent({
           );
         });
     },
+
+    toggleChangePasswordModal() {
+      this.isModal.changePassword = !this.isModal.changePassword;
+    },
   },
   computed: {
     //数字を三桁ごとにカンマ区切りにする
@@ -92,6 +110,7 @@ export default defineComponent({
   components: {
     LoggedHeader,
     SideMenu,
+    ChangePasswordModal,
   },
 });
 </script>
