@@ -65,6 +65,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import usersRepository from "../repositories/usersRepository";
 import { Field, Form } from "vee-validate";
 import "../plugins/veeValidate";
 import Close from "./icons/Close.vue";
@@ -74,6 +75,7 @@ import EyeOff from "./icons/EyeOff.vue";
 export default defineComponent({
   props: {
     toggleChangePasswordModal: Function,
+    userEmail: String,
   },
   data() {
     return {
@@ -96,6 +98,25 @@ export default defineComponent({
       if (!isSameLetter) {
         return false;
       }
+
+      usersRepository
+        .updateUser({
+          email: this.userEmail,
+          password: this.password,
+        })
+        .then((res) => {
+          alert(`
+            ${res.data.message}\n
+            ・パスワードを変更
+          `);
+          this.toggleChangePasswordModal!();
+        })
+        .catch((e) => {
+          const error = e.response;
+          alert(
+            `${error.status} ${error.statusText}\n問題が発生しました。\nもう一度操作してください。`
+          );
+        });
 
       return true;
     },

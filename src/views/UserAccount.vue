@@ -31,6 +31,7 @@
     <ChangePasswordModal
       v-if="isModal.changePassword"
       :toggle-change-password-modal="toggleChangePasswordModal"
+      :user-email="userEmail"
     />
   </div>
 </template>
