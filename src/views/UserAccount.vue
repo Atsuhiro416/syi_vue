@@ -24,7 +24,12 @@
         >
           パスワード変更
         </button>
-        <button class="account-buttons__delete">アカウント削除</button>
+        <button
+          class="account-buttons__delete"
+          @click="toggleDeleteAccountModal"
+        >
+          アカウント削除
+        </button>
       </div>
     </div>
 
@@ -32,6 +37,10 @@
       v-if="isModal.changePassword"
       :toggle-change-password-modal="toggleChangePasswordModal"
       :user-email="userEmail"
+    />
+    <DeleteAccountModal
+      v-if="isModal.deleteAccount"
+      :toggle-delete-account-modal="toggleDeleteAccountModal"
     />
   </div>
 </template>
@@ -42,6 +51,7 @@ import store from "@/store";
 import LoggedHeader from "../components/Header.vue";
 import SideMenu from "../components/SideMenu.vue";
 import ChangePasswordModal from "../components/ChangePasswordModal.vue";
+import DeleteAccountModal from "../components/DeleteAccountModal.vue";
 import listRepository from "../repositories/listRepository";
 import foldersRepository from "../repositories/foldersRepository";
 
@@ -55,6 +65,7 @@ export default defineComponent({
       },
       isModal: {
         changePassword: false,
+        deleteAccount: false,
       },
     };
   },
@@ -94,6 +105,9 @@ export default defineComponent({
     toggleChangePasswordModal() {
       this.isModal.changePassword = !this.isModal.changePassword;
     },
+    toggleDeleteAccountModal() {
+      this.isModal.deleteAccount = !this.isModal.deleteAccount;
+    },
   },
   computed: {
     //数字を三桁ごとにカンマ区切りにする
@@ -112,6 +126,7 @@ export default defineComponent({
     LoggedHeader,
     SideMenu,
     ChangePasswordModal,
+    DeleteAccountModal,
   },
 });
 </script>
