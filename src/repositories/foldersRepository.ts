@@ -8,6 +8,10 @@ export default {
     return Repository.url.get(`users/${userId}/folders`);
   },
 
+  getUserFolderCounts() {
+    return Repository.url.get(`users/${userId}/folder-counts`);
+  },
+
   createFolder(payload: any) {
     return Repository.url.post("/folders", payload);
   },

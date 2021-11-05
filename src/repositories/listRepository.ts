@@ -8,6 +8,10 @@ export default {
     return Repository.url.get(`users/${userId}/stacks`);
   },
 
+  getUserListCounts() {
+    return Repository.url.get(`users/${userId}/stack-counts`);
+  },
+
   createList(payload: any) {
     return Repository.url.post("/stacks", payload);
   },
