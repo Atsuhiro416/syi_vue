@@ -7,6 +7,7 @@ import Folders from "../views/Folders.vue";
 import FolderContents from "../views/FolderContents.vue";
 import CreateList from "../views/CreateList.vue";
 import ListDetail from "../views/ListDetail.vue";
+import Exit from "../views/Exit.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -51,6 +52,11 @@ const routes: Array<RouteRecordRaw> = [
     name: "ListDetail",
     component: ListDetail,
     props: true,
+  },
+  {
+    path: "/exit",
+    name: "Exit",
+    component: Exit,
   },
 ];
 

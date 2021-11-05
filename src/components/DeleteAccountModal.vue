@@ -33,8 +33,7 @@ export default defineComponent({
         usersRepository
           .deleteUser()
           .then((res) => {
-            alert(`${res.data.message}`);
-            this.$router.push("/");
+            this.$router.push("/exit");
           })
           .catch((e) => {
             const error = e.response;
