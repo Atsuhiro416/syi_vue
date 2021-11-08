@@ -77,7 +77,7 @@ export default defineComponent({
 
     getListCounts() {
       listRepository
-        .getUserListCounts()
+        .getUserListCounts(store.getters.getUserInfo.id)
         .then((res) => {
           this.counts.list = res.data.counts;
         })

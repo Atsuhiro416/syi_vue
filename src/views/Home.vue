@@ -31,6 +31,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import store from "@/store";
 import LoggedHeader from "../components/Header.vue";
 import SideMenu from "../components/SideMenu.vue";
 import AddListAccordion from "../components/AddListAccordion.vue";
@@ -60,7 +61,7 @@ export default defineComponent({
   methods: {
     getLists() {
       listRepository
-        .getUserLists()
+        .getUserLists(store.getters.getUserInfo.id)
         .then((res) => {
           this.lists = res.data.data;
         })
