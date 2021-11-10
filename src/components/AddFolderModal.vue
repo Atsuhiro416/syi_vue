@@ -20,6 +20,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import store from "@/store";
 import FoldersRepository from "../repositories/foldersRepository";
 import FolderCard from "../components/FolderCard.vue";
 import Close from "../components/icons/Close.vue";
@@ -35,7 +36,7 @@ export default defineComponent({
   },
   methods: {
     getFolders() {
-      FoldersRepository.getUserFolders()
+      FoldersRepository.getUserFolders(store.getters.getUserInfo.id)
         .then((res) => {
           this.folders = res.data.data;
         })

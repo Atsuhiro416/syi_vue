@@ -90,7 +90,7 @@ export default defineComponent({
     },
     getFolderCounts() {
       foldersRepository
-        .getUserFolderCounts()
+        .getUserFolderCounts(store.getters.getUserInfo.id)
         .then((res) => {
           this.counts.folder = res.data.counts;
         })

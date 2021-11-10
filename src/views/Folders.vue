@@ -20,6 +20,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import store from "@/store";
 import LoggedHeader from "../components/Header.vue";
 import SideMenu from "../components/SideMenu.vue";
 import SortByDateSelectBox from "../components/SortByDateSelectBox.vue";
@@ -43,7 +44,7 @@ export default defineComponent({
   },
   methods: {
     getFolders() {
-      FoldersRepository.getUserFolders()
+      FoldersRepository.getUserFolders(store.getters.getUserInfo.id)
         .then((res) => {
           this.folders = res.data.data;
         })

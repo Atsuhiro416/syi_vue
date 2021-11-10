@@ -1,14 +1,11 @@
 import Repository from "./Repository";
-import store from "@/store";
-
-const userId = store.getters.getUserInfo.id;
 
 export default {
-  getUserFolders() {
+  getUserFolders(userId: number) {
     return Repository.url.get(`users/${userId}/folders`);
   },
 
-  getUserFolderCounts() {
+  getUserFolderCounts(userId: number) {
     return Repository.url.get(`users/${userId}/folder-counts`);
   },
 
@@ -16,15 +13,15 @@ export default {
     return Repository.url.post("/folders", payload);
   },
 
-  showFolder(id: number) {
-    return Repository.url.get(`/folders/${id}`);
+  showFolder(folderId: number) {
+    return Repository.url.get(`/folders/${folderId}`);
   },
 
-  updateFolder(id: number, payload: any) {
-    return Repository.url.put(`/folders/${id}`, payload);
+  updateFolder(folderId: number, payload: any) {
+    return Repository.url.put(`/folders/${folderId}`, payload);
   },
 
-  deleteFolder(id: number) {
-    return Repository.url.delete(`/folders/${id}`);
+  deleteFolder(folderId: number) {
+    return Repository.url.delete(`/folders/${folderId}`);
   },
 };
