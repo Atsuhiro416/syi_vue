@@ -8,6 +8,7 @@ import FolderContents from "../views/FolderContents.vue";
 import CreateList from "../views/CreateList.vue";
 import ListDetail from "../views/ListDetail.vue";
 import Exit from "../views/Exit.vue";
+import NotFound from "../views/NotFound.vue";
 import store from "@/store";
 
 const routes: Array<RouteRecordRaw> = [
@@ -82,6 +83,15 @@ const routes: Array<RouteRecordRaw> = [
     path: "/exit",
     name: "Exit",
     component: Exit,
+    meta: {
+      requiresAuth: false,
+    },
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "NotFound",
+    component: NotFound,
+    alias: "/not-found",
     meta: {
       requiresAuth: false,
     },

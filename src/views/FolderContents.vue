@@ -75,6 +75,9 @@ export default defineComponent({
           this.folderName = data.name;
         })
         .catch((e) => {
+          if (e.response.status === 404) {
+            return e.response;
+          }
           console.log(e);
           alert("問題が発生しました。");
         });
