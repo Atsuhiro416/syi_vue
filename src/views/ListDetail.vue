@@ -124,6 +124,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import store from "@/store";
 import LoggedHeader from "../components/Header.vue";
 import SideMenu from "../components/SideMenu.vue";
 import AdjustableTextArea from "../components/AjustableTextArea.vue";
@@ -199,6 +200,10 @@ export default defineComponent({
         .showList(this.convertListId)
         .then((res) => {
           const data = res.data.data[0];
+          if (data.user_id !== store.getters.getUserInfo.id) {
+            this.$router.replace("/not-found");
+          }
+
           this.list = data;
           this.listName = data.name;
           this.listLink = data.link;

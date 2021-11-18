@@ -34,6 +34,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import store from "@/store";
 import LoggedHeader from "../components/Header.vue";
 import SideMenu from "../components/SideMenu.vue";
 import AddListAccordion from "../components/AddListAccordion.vue";
@@ -71,6 +72,10 @@ export default defineComponent({
         .showFolder(this.convertFolderId)
         .then((res) => {
           const data = res.data.data;
+          if (data.user_id !== store.getters.getUserInfo.id) {
+            this.$router.replace("/not-found");
+          }
+
           this.folder = data;
           this.folderName = data.name;
         })
